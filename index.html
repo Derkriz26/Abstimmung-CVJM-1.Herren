@@ -23,16 +23,30 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         .player-card {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-tap-highlight-color: transparent;
+            outline: none !important;
         }
         .player-card:hover {
             transform: translateY(-2px);
             border-color: rgba(59, 130, 246, 0.5);
         }
+        .player-card:active, .player-card:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
         .player-card.selected {
-            background: rgba(59, 130, 246, 0.2);
+            background: rgba(59, 130, 246, 0.25);
             border-color: #3b82f6;
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+            outline: none !important;
+        }
+        button {
+            -webkit-tap-highlight-color: transparent;
+            outline: none !important;
+        }
+        button:focus {
+            outline: none !important;
         }
         ::-webkit-scrollbar {
             width: 4px;
@@ -43,7 +57,7 @@
         }
     </style>
 </head>
-<body class="p-2 md:p-4 flex flex-col justify-between select-none">
+<body class="p-3 md:p-5 flex flex-col justify-between select-none">
 
     <!-- Header -->
     <header class="text-center py-1 flex-shrink-0">
@@ -56,29 +70,28 @@
     </header>
 
     <!-- Main Container (Voting Grid & Result View) -->
-    <main class="flex-grow flex flex-col justify-center max-w-5xl mx-auto w-full my-1 overflow-hidden">
+    <main class="flex-grow flex flex-col justify-between max-w-5xl mx-auto w-full my-2 overflow-hidden">
         
         <!-- Voting View -->
         <div id="voting-view" class="flex flex-col h-full justify-between">
             <!-- Player Grid -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 overflow-y-auto max-h-[72vh] p-1" id="player-grid">
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 overflow-y-auto p-1 max-h-[62vh]" id="player-grid">
                 <!-- Injected via JS -->
             </div>
 
-            <!-- Feedback Toast -->
-            <div class="h-6 flex items-center justify-center flex-shrink-0">
-                <div id="quick-feedback" class="text-[11px] font-medium text-emerald-400 opacity-0 transition-opacity duration-300 bg-emerald-500/10 px-3 py-0.5 rounded-full border border-emerald-500/20">
-                    ✓ Stimme gezählt! Nächster bitte...
+            <!-- Bottom Control Area -->
+            <div class="flex flex-col gap-2 pt-2 border-t border-slate-800 flex-shrink-0 mt-auto bg-[#0f172a]/90 backdrop-blur pb-1">
+                <div class="flex items-center justify-between">
+                    <div id="quick-feedback" class="text-[11px] font-medium text-emerald-400 opacity-0 transition-opacity duration-300 bg-emerald-500/10 px-3 py-0.5 rounded-full border border-emerald-500/20">
+                        ✓ Stimme gezählt! Nächster bitte...
+                    </div>
+                    <div class="text-[11px] text-slate-400 flex items-center gap-1.5 ml-auto">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
+                        Unbegrenzte Stimmen
+                    </div>
                 </div>
-            </div>
 
-            <!-- Action Footer inside Voting View -->
-            <div class="flex items-center justify-between pt-2 border-t border-slate-800 flex-shrink-0">
-                <div class="text-[11px] text-slate-400 flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
-                    Unbegrenzte Stimmen möglich
-                </div>
-                <button onclick="showResults()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-blue-600/30 transition-all flex items-center gap-2">
+                <button onclick="showResults()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2">
                     <span>Ergebnis anzeigen</span>
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                 </button>
@@ -86,7 +99,7 @@
         </div>
 
         <!-- Result View (Hidden by default) -->
-        <div id="result-view" class="hidden flex-col h-full justify-center items-center text-center animate-fade-in">
+        <div id="result-view" class="hidden flex-col h-full justify-center items-center text-center animate-fade-in my-auto">
             <div class="glass-card p-5 md:p-6 rounded-3xl max-w-md w-full border border-slate-700 shadow-2xl relative overflow-hidden">
                 <div class="absolute -top-12 -right-12 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl"></div>
                 
@@ -161,7 +174,7 @@
                 card.className = "player-card glass-card p-2 rounded-xl cursor-pointer flex items-center justify-between border border-slate-700/60";
                 card.onclick = () => castVote(p.id, card);
                 card.innerHTML = `
-                    <div class="flex items-center gap-2 min-w-0">
+                    <div class="flex items-center gap-2 min-w-0 pointer-events-none">
                         <div class="w-7 h-7 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs text-blue-400 flex-shrink-0">
                             ${p.number}
                         </div>
@@ -169,7 +182,7 @@
                             <h3 class="font-medium text-xs text-white truncate">${p.name}</h3>
                         </div>
                     </div>
-                    <div class="w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[9px] text-slate-500 flex-shrink-0">
+                    <div class="w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[9px] text-slate-500 flex-shrink-0 pointer-events-none">
                         ✓
                     </div>
                 `;
@@ -185,7 +198,7 @@
             cardElement.classList.add('selected');
             setTimeout(() => {
                 cardElement.classList.remove('selected');
-            }, 250);
+            }, 200);
 
             const feedback = document.getElementById('quick-feedback');
             feedback.style.opacity = '1';
