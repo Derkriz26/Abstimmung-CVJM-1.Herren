@@ -9,8 +9,9 @@
     <style>
         body {
             font-family: 'Outfit', sans-serif;
-            background: #0f172a;
-            color: #f8fafc;
+            /* Dezent abgedunkelter, edler Hintergrund (kein grelles Blau mehr) */
+            background: #121212;
+            color: #f1f5f9;
             overflow: hidden;
             height: 100vh;
             margin: 0;
@@ -18,9 +19,10 @@
             flex-direction: column;
         }
         .glass-card {
-            background: rgba(30, 41, 59, 0.7);
+            /* Dezent getönte Glas-Optik mit minimalem Rot-Schimmer */
+            background: rgba(24, 24, 27, 0.8);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
         .player-card {
             transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
@@ -30,11 +32,11 @@
         }
         .player-card:hover {
             transform: translateY(-2px);
-            border-color: rgba(239, 68, 68, 0.6); /* Rot */
+            border-color: rgba(239, 68, 68, 0.5); /* Dezentes Rot */
         }
         .player-card.selected {
-            background: rgba(239, 68, 68, 0.25) !important;
-            border-color: #ef4444 !important; /* Rot */
+            background: rgba(239, 68, 68, 0.2) !important;
+            border-color: #ef4444 !important; /* CVJM Rot */
         }
         button {
             -webkit-tap-highlight-color: transparent !important;
@@ -51,7 +53,7 @@
 </head>
 <body class="p-3 md:p-5 flex flex-col justify-between select-none">
 
-    <!-- Header mit Rot/Gelb-Akzenten -->
+    <!-- Header -->
     <header class="text-center py-1 flex-shrink-0">
         <div class="flex items-center justify-between mb-1">
             <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-semibold uppercase tracking-wider">
@@ -66,7 +68,7 @@
         </div>
         
         <h1 class="text-base md:text-lg font-bold tracking-tight text-white" id="main-title">Man of the Match</h1>
-        <p class="text-slate-400 text-[11px]" id="vote-counter-label">Bereits <span id="total-votes-count" class="text-amber-400 font-bold">0</span> Stimmen abgegeben (verdeckt)</p>
+        <p class="text-zinc-400 text-[11px]" id="vote-counter-label">Bereits <span id="total-votes-count" class="text-amber-400 font-bold">0</span> Stimmen abgegeben (verdeckt)</p>
     </header>
 
     <!-- Main Container -->
@@ -87,7 +89,7 @@
 
         <!-- Result View -->
         <div id="result-view" class="hidden flex-col h-full justify-center items-center text-center animate-fade-in my-auto">
-            <div class="glass-card p-5 md:p-6 rounded-3xl max-w-md w-full border border-slate-700 shadow-2xl relative overflow-hidden">
+            <div class="glass-card p-5 md:p-6 rounded-3xl max-w-md w-full border border-zinc-700 shadow-2xl relative overflow-hidden">
                 <div class="absolute -top-12 -right-12 w-32 h-32 bg-red-500/10 rounded-full blur-2xl"></div>
                 
                 <div class="w-14 h-14 bg-amber-500/20 border border-amber-500/40 rounded-2xl flex items-center justify-center mx-auto mb-3 text-amber-400 shadow-inner">
@@ -96,13 +98,13 @@
 
                 <span class="text-[11px] uppercase tracking-widest text-amber-400 font-bold block mb-1">Man of the Match</span>
                 <h2 id="winner-name" class="text-xl md:text-2xl font-extrabold text-white mb-1">Noch keine Stimmen</h2>
-                <div id="winner-stats" class="inline-block px-3 py-1 bg-slate-800/80 rounded-full text-slate-300 text-xs mb-4 border border-slate-700">
+                <div id="winner-stats" class="inline-block px-3 py-1 bg-zinc-800 rounded-full text-zinc-300 text-xs mb-4 border border-zinc-700">
                     0 Stimmen insgesamt
                 </div>
 
-                <div class="bg-slate-900/50 rounded-xl p-3 mb-4 text-left border border-slate-800/80">
-                    <p class="text-[11px] font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Top-Plazierungen</p>
-                    <div id="top-three-list" class="space-y-1 text-xs text-slate-400">
+                <div class="bg-zinc-900/60 rounded-xl p-3 mb-4 text-left border border-zinc-800">
+                    <p class="text-[11px] font-semibold text-zinc-400 mb-1.5 uppercase tracking-wider">Top-Plazierungen</p>
+                    <div id="top-three-list" class="space-y-1 text-xs text-zinc-400">
                         Noch keine Daten vorhanden.
                     </div>
                 </div>
@@ -111,7 +113,7 @@
                     <button onclick="backToVoting()" class="px-4 py-2 bg-red-600 hover:bg-red-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-red-600/30 transition-all">
                         ← Weiter abstimmen
                     </button>
-                    <button onclick="resetVoting()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition-all">
+                    <button onclick="resetVoting()" class="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-semibold rounded-xl border border-zinc-700 transition-all">
                         Neu starten
                     </button>
                 </div>
@@ -121,7 +123,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="text-center text-slate-500 text-[10px] flex-shrink-0 pt-1">
+    <footer class="text-center text-zinc-500 text-[10px] flex-shrink-0 pt-1">
         CVJM Oberwiehl • Spieler-Voting-Tool
     </footer>
 
@@ -157,13 +159,13 @@
             grid.innerHTML = '';
             players.forEach(p => {
                 const card = document.createElement('div');
-                card.className = "player-card glass-card p-2 rounded-xl flex items-center justify-between border border-slate-700/60";
+                card.className = "player-card glass-card p-2 rounded-xl flex items-center justify-between border border-zinc-800";
                 
                 card.onclick = () => castVote(p.id, card);
 
                 card.innerHTML = `
                     <div class="flex items-center gap-2 min-w-0 pointer-events-none">
-                        <div class="w-7 h-7 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs text-amber-400 flex-shrink-0">
+                        <div class="w-7 h-7 rounded-lg bg-zinc-900 border border-zinc-700 flex items-center justify-center font-bold text-xs text-amber-400 flex-shrink-0">
                             ${p.number}
                         </div>
                         <div class="min-w-0">
@@ -217,10 +219,10 @@
             topList.innerHTML = '';
             sorted.slice(0, 3).forEach((p, idx) => {
                 const row = document.createElement('div');
-                row.className = "flex items-center justify-between text-slate-300 py-0.5 text-xs";
+                row.className = "flex items-center justify-between text-zinc-300 py-0.5 text-xs";
                 row.innerHTML = `
                     <span class="flex items-center gap-2">
-                        <span class="font-bold text-slate-400">#${idx + 1}</span>
+                        <span class="font-bold text-zinc-400">#${idx + 1}</span>
                         <span class="truncate">${p.name} (${p.number})</span>
                     </span>
                     <span class="font-semibold text-amber-400">${votes[p.id]} St.</span>
@@ -238,7 +240,7 @@
         function resetVoting() {
             if (confirm("Wirklich alle Stimmen zurücksetzen?")) {
                 totalVotesCast = 0;
-                players.name = players.forEach(p => votes[p.id] = 0);
+                players.forEach(p => votes[p.id] = 0);
                 backToVoting();
                 renderGrid();
             }
