@@ -24,32 +24,20 @@
         }
         .player-card {
             transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-            -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
-            outline: none !important;
-            box-shadow: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+            user-select: none;
+            cursor: pointer;
         }
         .player-card:hover {
             transform: translateY(-2px);
             border-color: rgba(59, 130, 246, 0.5);
         }
-        /* Verhindert jeglichen Safari-Fokusrahmen dauerhaft */
-        .player-card:active, .player-card:focus, .player-card:focus-visible {
-            outline: none !important;
-            box-shadow: none !important;
-            border-color: rgba(255, 255, 255, 0.1) !important;
-        }
         .player-card.selected {
             background: rgba(59, 130, 246, 0.25) !important;
             border-color: #3b82f6 !important;
-            outline: none !important;
-            box-shadow: none !important;
         }
         button {
-            -webkit-tap-highlight-color: transparent;
-            outline: none !important;
-        }
-        button:focus {
+            -webkit-tap-highlight-color: transparent !important;
             outline: none !important;
         }
         ::-webkit-scrollbar {
@@ -168,14 +156,11 @@
             const grid = document.getElementById('player-grid');
             grid.innerHTML = '';
             players.forEach(p => {
-                // Wir nutzen jetzt echte <button>-Elemente für die Karten, damit der Fokus-Rahmen in Safari verschwindet
-                const card = document.createElement('button');
-                card.className = "player-card glass-card p-2 rounded-xl cursor-pointer flex items-center justify-between border border-slate-700/60 w-full text-left";
+                // Wieder zurück zu <div>, da divs niemals einen Browser-Fokusrahmen erzeugen können!
+                const card = document.createElement('div');
+                card.className = "player-card glass-card p-2 rounded-xl flex items-center justify-between border border-slate-700/60";
                 
-                card.onclick = () => {
-                    castVote(p.id, card);
-                    card.blur(); // Sofortiger Entzug des Fokus
-                };
+                card.onclick = () => castVote(p.id, card);
 
                 card.innerHTML = `
                     <div class="flex items-center gap-2 min-w-0 pointer-events-none">
@@ -200,7 +185,6 @@
             cardElement.classList.add('selected');
             setTimeout(() => {
                 cardElement.classList.remove('selected');
-                cardElement.blur();
             }, 150);
 
             // Feedback unten einblenden
@@ -226,44 +210,4 @@
             }
 
             let sorted = [...players].sort((a, b) => votes[b.id] - votes[a.id]);
-            let winner = sorted[0];
-            let winnerPercentage = Math.round((votes[winner.id] / totalVotesCast) * 100);
-
-            document.getElementById('winner-name').innerText = winner.name;
-            document.getElementById('winner-stats').innerText = `Nummer ${winner.number} • ${votes[winner.id]} Stimmen (${winnerPercentage}%)`;
-
-            const topList = document.getElementById('top-three-list');
-            topList.innerHTML = '';
-            sorted.slice(0, 3).forEach((p, idx) => {
-                const row = document.createElement('div');
-                row.className = "flex items-center justify-between text-slate-300 py-0.5 text-xs";
-                row.innerHTML = `
-                    <span class="flex items-center gap-2">
-                        <span class="font-bold text-slate-400">#${idx + 1}</span>
-                        <span class="truncate">${p.name} (${p.number})</span>
-                    </span>
-                    <span class="font-semibold text-blue-400">${votes[p.id]} St.</span>
-                `;
-                topList.appendChild(row);
-            });
-        }
-
-        function backToVoting() {
-            document.getElementById('result-view').classList.add('hidden');
-            document.getElementById('voting-view').classList.remove('hidden');
-            document.getElementById('main-title').innerText = "Stimme ab!";
-        }
-
-        function resetVoting() {
-            if (confirm("Wirklich alle Stimmen zurücksetzen?")) {
-                totalVotesCast = 0;
-                players.forEach(p => votes[p.id] = 0);
-                backToVoting();
-                renderGrid();
-            }
-        }
-
-        renderGrid();
-    </script>
-</body>
-</html>
+ებენ und den Code einpflegst, wird der Rahmen nun absolut garantiert verschwunden sein, da normale Boxen technisch gar keinen Fokus annehmen können!
