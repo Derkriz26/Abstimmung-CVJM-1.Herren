@@ -11,7 +11,7 @@
             font-family: 'Outfit', sans-serif;
             background: #0f172a;
             color: #f8fafc;
-            overflow: hidden; /* Ensure everything fits without scrolling */
+            overflow: hidden;
             height: 100vh;
             margin: 0;
             display: flex;
@@ -34,7 +34,6 @@
             border-color: #3b82f6;
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
         }
-        /* Custom scrollbar optimized for touch grid */
         ::-webkit-scrollbar {
             width: 4px;
         }
@@ -53,7 +52,7 @@
             Man of the Match
         </div>
         <h1 class="text-lg md:text-xl font-bold tracking-tight text-white" id="main-title">Stimme ab!</h1>
-        <p class="text-slate-400 text-xs" id="vote-counter-label">Stimme <span id="current-voter" class="text-blue-400 font-bold">1</span> von <span id="total-voters">18</span> läuft verdeckt</p>
+        <p class="text-slate-400 text-xs" id="vote-counter-label">Bereits <span id="total-votes-count" class="text-blue-400 font-bold">0</span> Stimmen abgegeben (verdeckt)</p>
     </header>
 
     <!-- Main Container (Voting Grid & Result View) -->
@@ -61,15 +60,15 @@
         
         <!-- Voting View -->
         <div id="voting-view" class="flex flex-col h-full justify-between">
-            <!-- Player Grid (Compact columns to fit all 19 players without scrolling if possible, or clean scroll) -->
+            <!-- Player Grid -->
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 overflow-y-auto max-h-[72vh] p-1" id="player-grid">
                 <!-- Injected via JS -->
             </div>
 
-            <!-- Feedback Toast / Subdued notification (no modal, auto-fading quick feedback) -->
+            <!-- Feedback Toast -->
             <div class="h-6 flex items-center justify-center flex-shrink-0">
                 <div id="quick-feedback" class="text-[11px] font-medium text-emerald-400 opacity-0 transition-opacity duration-300 bg-emerald-500/10 px-3 py-0.5 rounded-full border border-emerald-500/20">
-                    ✓ Stimme erfasst! Nächster Spieler...
+                    ✓ Stimme gezählt! Nächster bitte...
                 </div>
             </div>
 
@@ -77,11 +76,11 @@
             <div class="flex items-center justify-between pt-2 border-t border-slate-800 flex-shrink-0">
                 <div class="text-[11px] text-slate-400 flex items-center gap-1.5">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
-                    Auswahl bleibt unsichtbar
+                    Unbegrenzte Stimmen möglich
                 </div>
-                <button onclick="finishVoting()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-blue-600/30 transition-all flex items-center gap-2">
-                    <span>Auswertung anzeigen</span>
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+                <button onclick="showResults()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-blue-600/30 transition-all flex items-center gap-2">
+                    <span>Ergebnis anzeigen</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
                 </button>
             </div>
         </div>
@@ -96,20 +95,23 @@
                 </div>
 
                 <span class="text-[11px] uppercase tracking-widest text-amber-400 font-bold block mb-1">Man of the Match</span>
-                <h2 id="winner-name" class="text-xl md:text-2xl font-extrabold text-white mb-1">Spieler Name</h2>
+                <h2 id="winner-name" class="text-xl md:text-2xl font-extrabold text-white mb-1">Noch keine Stimmen</h2>
                 <div id="winner-stats" class="inline-block px-3 py-1 bg-slate-800/80 rounded-full text-slate-300 text-xs mb-4 border border-slate-700">
-                    Nummer X • X Stimmen (Y%)
+                    0 Stimmen insgesamt
                 </div>
 
                 <!-- Top 3 Mini Breakdown -->
                 <div class="bg-slate-900/50 rounded-xl p-3 mb-4 text-left border border-slate-800/80">
                     <p class="text-[11px] font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">Top-Plazierungen</p>
-                    <div id="top-three-list" class="space-y-1 text-xs">
-                        <!-- Populated via JS -->
+                    <div id="top-three-list" class="space-y-1 text-xs text-slate-400">
+                        Noch keine Daten vorhanden.
                     </div>
                 </div>
 
                 <div class="flex gap-3 justify-center">
+                    <button onclick="backToVoting()" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-blue-600/30 transition-all">
+                        ← Weiter abstimmen
+                    </button>
                     <button onclick="resetVoting()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl border border-slate-700 transition-all">
                         Neu starten / Reset
                     </button>
@@ -121,11 +123,10 @@
 
     <!-- Footer / Info -->
     <footer class="text-center text-slate-500 text-[10px] flex-shrink-0 pt-1">
-        Spieler-Voting-Tool • Verdeckte Stimmabgabe ohne Quittierung
+        Spieler-Voting-Tool • Unbegrenzte verdeckte Stimmabgabe
     </footer>
 
     <script>
-        // Exakte Spielerliste aus der Anfrage
         const players = [
             { id: 1, name: "Arthur Gartung", number: "93" },
             { id: 2, name: "Jan Herhaus", number: "15" },
@@ -148,8 +149,7 @@
             { id: 19, name: "Chris Koch", number: "26" }
         ];
 
-        const TOTAL_VOTERS = 18; // Ziel: ca. 14-25 Stimmabgaben (Standard: 18)
-        let currentVoterIndex = 1;
+        let totalVotesCast = 0;
         let votes = {}; 
         players.forEach(p => votes[p.id] = 0);
 
@@ -175,44 +175,42 @@
                 `;
                 grid.appendChild(card);
             });
-            document.getElementById('total-voters').innerText = TOTAL_VOTERS;
-            document.getElementById('current-voter').innerText = currentVoterIndex;
+            document.getElementById('total-votes-count').innerText = totalVotesCast;
         }
 
         function castVote(playerId, cardElement) {
             votes[playerId]++;
+            totalVotesCast++;
 
-            // Kurzes visuelles Feedback auf der Karte
             cardElement.classList.add('selected');
             setTimeout(() => {
                 cardElement.classList.remove('selected');
             }, 250);
 
-            // Kurzer Toast ohne Quittierung
             const feedback = document.getElementById('quick-feedback');
             feedback.style.opacity = '1';
             setTimeout(() => {
                 feedback.style.opacity = '0';
             }, 1000);
 
-            currentVoterIndex++;
-            if (currentVoterIndex > TOTAL_VOTERS) {
-                finishVoting();
-            } else {
-                document.getElementById('current-voter').innerText = currentVoterIndex;
-            }
+            document.getElementById('total-votes-count').innerText = totalVotesCast;
         }
 
-        function finishVoting() {
+        function showResults() {
             document.getElementById('voting-view').classList.add('hidden');
             document.getElementById('result-view').classList.remove('hidden');
             document.getElementById('main-title').innerText = "Ergebnis der Spieler-Wahl";
-            document.getElementById('vote-counter-label').innerText = "Alle Stimmen erfolgreich verdeckt erfasst";
+
+            if (totalVotesCast === 0) {
+                document.getElementById('winner-name').innerText = "Noch keine Stimmen";
+                document.getElementById('winner-stats').innerText = "0 Stimmen insgesamt";
+                document.getElementById('top-three-list').innerHTML = "Es wurden noch keine Stimmen abgegeben.";
+                return;
+            }
 
             let sorted = [...players].sort((a, b) => votes[b.id] - votes[a.id]);
             let winner = sorted[0];
-            let totalVotesCast = Object.values(votes).reduce((a, b) => a + b, 0);
-            let winnerPercentage = totalVotesCast > 0 ? Math.round((votes[winner.id] / totalVotesCast) * 100) : 0;
+            let winnerPercentage = Math.round((votes[winner.id] / totalVotesCast) * 100);
 
             document.getElementById('winner-name').innerText = winner.name;
             document.getElementById('winner-stats').innerText = `Nummer ${winner.number} • ${votes[winner.id]} Stimmen (${winnerPercentage}%)`;
@@ -221,7 +219,7 @@
             topList.innerHTML = '';
             sorted.slice(0, 3).forEach((p, idx) => {
                 const row = document.createElement('div');
-                row.className = "flex items-center justify-between text-slate-300 py-0.5";
+                row.className = "flex items-center justify-between text-slate-300 py-0.5 text-xs";
                 row.innerHTML = `
                     <span class="flex items-center gap-2">
                         <span class="font-bold text-slate-400">#${idx + 1}</span>
@@ -233,13 +231,19 @@
             });
         }
 
-        function resetVoting() {
-            currentVoterIndex = 1;
-            players.forEach(p => votes[p.id] = 0);
+        function backToVoting() {
             document.getElementById('result-view').classList.add('hidden');
             document.getElementById('voting-view').classList.remove('hidden');
             document.getElementById('main-title').innerText = "Stimme ab!";
-            renderGrid();
+        }
+
+        function resetVoting() {
+            if (confirm("Wirklich alle Stimmen zurücksetzen?")) {
+                totalVotesCast = 0;
+                players.forEach(p => votes[p.id] = 0);
+                backToVoting();
+                renderGrid();
+            }
         }
 
         renderGrid();
