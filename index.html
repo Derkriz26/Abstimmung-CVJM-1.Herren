@@ -25,24 +25,18 @@
         .player-card {
             transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
             -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
             outline: none !important;
-            box-shadow: none !important;
         }
         .player-card:hover {
             transform: translateY(-2px);
             border-color: rgba(59, 130, 246, 0.5);
         }
-        /* Verhindert jeglichen Fokus- oder Klick-Rahmen auf dem Handy */
-        .player-card:active, .player-card:focus, .player-card:focus-visible {
+        /* Erzwingt, dass Safari absolut keinen Rahmen bei Fokus oder Aktivierung zeigt */
+        .player-card:active, .player-card:focus, .player-card:focus-visible, .player-card:target {
             outline: none !important;
-            box-shadow: none !important;
-            border-color: rgba(255, 255, 255, 0.1) !important;
-        }
-        .player-card.selected {
-            background: rgba(59, 130, 246, 0.25) !important;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3) !important;
             border-color: #3b82f6 !important;
-            outline: none !important;
-            box-shadow: none !important;
         }
         button {
             -webkit-tap-highlight-color: transparent;
@@ -62,7 +56,7 @@
 </head>
 <body class="p-3 md:p-5 flex flex-col justify-between select-none">
 
-    <!-- Header mit integriertem Auswertungs-Button oben -->
+    <!-- Header mit Auswertungs-Button oben -->
     <header class="text-center py-1 flex-shrink-0">
         <div class="flex items-center justify-between mb-1">
             <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-semibold uppercase tracking-wider">
@@ -169,6 +163,10 @@
             players.forEach(p => {
                 const card = document.createElement('div');
                 card.className = "player-card glass-card p-2 rounded-xl cursor-pointer flex items-center justify-between border border-slate-700/60";
+                
+                // Wir machen die Karten zu "tabindex='-1'", damit Safari sie gar nicht erst dauerhaft fokussieren kann
+                card.setAttribute('tabindex', '-1');
+                
                 card.onclick = () => castVote(p.id, card);
                 card.innerHTML = `
                     <div class="flex items-center gap-2 min-w-0 pointer-events-none">
@@ -192,14 +190,17 @@
             votes[playerId]++;
             totalVotesCast++;
 
-            // Kurzes Aufblinken beim Antippen, danach sofort wieder weg
-            cardElement.classList.add('selected');
+            // Visuelles Aufblinken für den Bruchteil einer Sekunde
+            cardElement.style.background = "rgba(59, 130, 246, 0.25)";
+            cardElement.style.borderColor = "#3b82f6";
+
             setTimeout(() => {
-                cardElement.classList.remove('selected');
-                cardElement.blur(); // Entfernt den Fokus sauber vom Element
+                cardElement.style.background = "";
+                cardElement.style.borderColor = "";
+                cardElement.blur(); // Entzieht Safari sofort den Fokus
             }, 150);
 
-            // Kurzes Feedback unten einblenden und nach 1 Sekunde wieder ausblenden
+            // Feedback unten einblenden
             const feedback = document.getElementById('quick-feedback');
             feedback.style.opacity = '1';
             setTimeout(() => {
