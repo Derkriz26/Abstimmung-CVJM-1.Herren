@@ -27,16 +27,23 @@
             -webkit-tap-highlight-color: transparent;
             -webkit-touch-callout: none;
             outline: none !important;
+            box-shadow: none !important;
         }
         .player-card:hover {
             transform: translateY(-2px);
             border-color: rgba(59, 130, 246, 0.5);
         }
-        /* Erzwingt, dass Safari absolut keinen Rahmen bei Fokus oder Aktivierung zeigt */
-        .player-card:active, .player-card:focus, .player-card:focus-visible, .player-card:target {
+        /* Verhindert jeglichen Safari-Fokusrahmen dauerhaft */
+        .player-card:active, .player-card:focus, .player-card:focus-visible {
             outline: none !important;
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3) !important;
+            box-shadow: none !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        .player-card.selected {
+            background: rgba(59, 130, 246, 0.25) !important;
             border-color: #3b82f6 !important;
+            outline: none !important;
+            box-shadow: none !important;
         }
         button {
             -webkit-tap-highlight-color: transparent;
@@ -161,13 +168,15 @@
             const grid = document.getElementById('player-grid');
             grid.innerHTML = '';
             players.forEach(p => {
-                const card = document.createElement('div');
-                card.className = "player-card glass-card p-2 rounded-xl cursor-pointer flex items-center justify-between border border-slate-700/60";
+                // Wir nutzen jetzt echte <button>-Elemente für die Karten, damit der Fokus-Rahmen in Safari verschwindet
+                const card = document.createElement('button');
+                card.className = "player-card glass-card p-2 rounded-xl cursor-pointer flex items-center justify-between border border-slate-700/60 w-full text-left";
                 
-                // Wir machen die Karten zu "tabindex='-1'", damit Safari sie gar nicht erst dauerhaft fokussieren kann
-                card.setAttribute('tabindex', '-1');
-                
-                card.onclick = () => castVote(p.id, card);
+                card.onclick = () => {
+                    castVote(p.id, card);
+                    card.blur(); // Sofortiger Entzug des Fokus
+                };
+
                 card.innerHTML = `
                     <div class="flex items-center gap-2 min-w-0 pointer-events-none">
                         <div class="w-7 h-7 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-xs text-blue-400 flex-shrink-0">
@@ -176,9 +185,6 @@
                         <div class="min-w-0">
                             <h3 class="font-medium text-xs text-white truncate">${p.name}</h3>
                         </div>
-                    </div>
-                    <div class="w-4 h-4 rounded-full border border-slate-600 flex items-center justify-center text-[9px] text-slate-500 flex-shrink-0 pointer-events-none">
-                        ✓
                     </div>
                 `;
                 grid.appendChild(card);
@@ -190,14 +196,11 @@
             votes[playerId]++;
             totalVotesCast++;
 
-            // Visuelles Aufblinken für den Bruchteil einer Sekunde
-            cardElement.style.background = "rgba(59, 130, 246, 0.25)";
-            cardElement.style.borderColor = "#3b82f6";
-
+            // Kurzes Aufblinken beim Antippen
+            cardElement.classList.add('selected');
             setTimeout(() => {
-                cardElement.style.background = "";
-                cardElement.style.borderColor = "";
-                cardElement.blur(); // Entzieht Safari sofort den Fokus
+                cardElement.classList.remove('selected');
+                cardElement.blur();
             }, 150);
 
             // Feedback unten einblenden
