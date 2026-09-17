@@ -20,7 +20,7 @@
         .glass-card {
             background: rgba(24, 24, 27, 0.8);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12); /* Dezenter, heller Rahmen */
             transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
             -webkit-tap-highlight-color: transparent !important;
             user-select: none;
@@ -28,11 +28,11 @@
         }
         .glass-card:hover {
             transform: translateY(-2px);
-            border-color: rgba(239, 68, 68, 0.4);
+            border-color: rgba(255, 255, 255, 0.25);
         }
-        /* Die Klasse für den kurzen Aufleucht-Effekt nur innen */
+        /* Das Aufleuchten jetzt in einem dezenten hellen Grau-Ton passend zum Rahmen, kein Rot mehr */
         .glass-card.flash-active {
-            background: rgba(239, 68, 68, 0.35) !important;
+            background: rgba(255, 255, 255, 0.12) !important;
         }
         button {
             -webkit-tap-highlight-color: transparent !important;
@@ -178,11 +178,11 @@
             votes[playerId]++;
             totalVotesCast++;
 
-            // Lässt nur den inneren Hintergrund kurz rot aufleuchten
+            // Lässt den Hintergrund ganz dezent im hellen Grau des Rahmens aufblitzen
             cardElement.classList.add('flash-active');
             setTimeout(() => {
                 cardElement.classList.remove('flash-active');
-            }, 180);
+            }, 150);
 
             const feedback = document.getElementById('quick-feedback');
             feedback.style.opacity = '1';
