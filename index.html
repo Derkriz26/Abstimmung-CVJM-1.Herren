@@ -123,27 +123,26 @@
     </footer>
 
     <script>
-        // Hier kannst du bei jedem Spieler den Pfad zu seinem Bild eintragen (z.B. 'images/arthur.jpg')
         const players = [
-            { id: 1, name: "Arthur Gartung", number: "93", image: "bilder/Arthur.JPG" },
-            { id: 2, name: "Jan Herhaus", number: "15", image: "https://via.placeholder.com/150" },
-            { id: 3, name: "Lennart Frielingsdorf", number: "99", image: "https://via.placeholder.com/150" },
-            { id: 4, name: "Dario Barth", number: "2", image: "https://via.placeholder.com/150" },
-            { id: 5, name: "Julian Klein", number: "44", image: "https://via.placeholder.com/150" },
-            { id: 6, name: "Johannes Schneevogt", number: "11", image: "https://via.placeholder.com/150" },
-            { id: 7, name: "Phil Nückel", number: "9", image: "https://via.placeholder.com/150" },
-            { id: 8, name: "Moritz Madel", number: "8", image: "https://via.placeholder.com/150" },
-            { id: 9, name: "Frederik Schneider", number: "13", image: "https://via.placeholder.com/150" },
-            { id: 10, name: "Max Meinerzhagen", number: "5", image: "https://via.placeholder.com/150" },
-            { id: 11, name: "JP Sträßer", number: "33", image: "https://via.placeholder.com/150" },
-            { id: 12, name: "Daniel Rischikov", number: "7", image: "https://via.placeholder.com/150" },
-            { id: 13, name: "Leon Binder", number: "75", image: "https://via.placeholder.com/150" },
-            { id: 14, name: "Severin Schreiber", number: "23", image: "https://via.placeholder.com/150" },
-            { id: 15, name: "Leo Dietrich", number: "–", image: "https://via.placeholder.com/150" },
-            { id: 16, name: "Anton Mosen", number: "–", image: "https://via.placeholder.com/150" },
-            { id: 17, name: "Daniel Canisius", number: "1", image: "https://via.placeholder.com/150" },
-            { id: 18, name: "Lukas Kirchner", number: "16", image: "https://via.placeholder.com/150" },
-            { id: 19, name: "Chris Koch", number: "26", image: "https://via.placeholder.com/150" }
+            { id: 1, name: "Arthur Gartung", number: "93" },
+            { id: 2, name: "Jan Herhaus", number: "15" },
+            { id: 3, name: "Lennart Frielingsdorf", number: "99" },
+            { id: 4, name: "Dario Barth", number: "2" },
+            { id: 5, name: "Julian Klein", number: "44" },
+            { id: 6, name: "Johannes Schneevogt", number: "11" },
+            { id: 7, name: "Phil Nückel", number: "9" },
+            { id: 8, name: "Moritz Madel", number: "8" },
+            { id: 9, name: "Frederik Schneider", number: "13" },
+            { id: 10, name: "Max Meinerzhagen", number: "5" },
+            { id: 11, name: "JP Sträßer", number: "33" },
+            { id: 12, name: "Daniel Rischikov", number: "7" },
+            { id: 13, name: "Leon Binder", number: "75" },
+            { id: 14, name: "Severin Schreiber", number: "23" },
+            { id: 15, name: "Leo Dietrich", number: "34" },
+            { id: 16, name: "Anton Mosen", number: "–" },
+            { id: 17, name: "Daniel Canisius", number: "1" },
+            { id: 18, name: "Lukas Kirchner", number: "16" },
+            { id: 19, name: "Chris Koch", number: "26" }
         ];
 
         let totalVotesCast = 0;
@@ -159,9 +158,12 @@
                 
                 card.onclick = () => castVote(p.id, card);
 
+                // Bildpfad greift auf den Ordner "bilder" zu (kleingeschrieben)
+                const imageSrc = p.number === "–" ? "https://via.placeholder.com/150" : `bilder/${p.number}.JPG`;
+
                 card.innerHTML = `
                     <div class="flex items-center gap-2.5 min-w-0 pointer-events-none">
-                        <img src="${p.image}" alt="${p.name}" class="w-8 h-8 rounded-full object-cover bg-zinc-900 border border-zinc-700 flex-shrink-0">
+                        <img src="${imageSrc}" alt="${p.name}" class="w-8 h-8 rounded-full object-cover bg-zinc-900 border border-zinc-700 flex-shrink-0">
                         <div class="min-w-0">
                             <h3 class="font-medium text-xs text-white truncate">${p.name}</h3>
                             <p class="text-[10px] text-zinc-400">Nr. ${p.number}</p>
@@ -230,10 +232,6 @@
             document.getElementById('result-view').classList.add('hidden');
             document.getElementById('voting-view').classList.remove('hidden');
             document.getElementById('main-title').innerText = "Man of the Match";
-        }
-
-        function resetNames() {
-            // function placeholder for reset logic
         }
 
         function resetVoting() {
