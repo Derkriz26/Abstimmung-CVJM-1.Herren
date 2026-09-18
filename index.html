@@ -20,7 +20,7 @@
         .glass-card {
             background: rgba(24, 24, 27, 0.8);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.12); /* Dezenter, heller Rahmen */
+            border: 1px solid rgba(255, 255, 255, 0.12);
             transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
             -webkit-tap-highlight-color: transparent !important;
             user-select: none;
@@ -30,7 +30,6 @@
             transform: translateY(-2px);
             border-color: rgba(255, 255, 255, 0.25);
         }
-        /* Das Aufleuchten jetzt in einem dezenten hellen Grau-Ton passend zum Rahmen, kein Rot mehr */
         .glass-card.flash-active {
             background: rgba(255, 255, 255, 0.12) !important;
         }
@@ -124,26 +123,27 @@
     </footer>
 
     <script>
+        // Hier kannst du bei jedem Spieler den Pfad zu seinem Bild eintragen (z.B. 'images/arthur.jpg')
         const players = [
-            { id: 1, name: "Arthur Gartung", number: "93" },
-            { id: 2, name: "Jan Herhaus", number: "15" },
-            { id: 3, name: "Lennart Frielingsdorf", number: "99" },
-            { id: 4, name: "Dario Barth", number: "2" },
-            { id: 5, name: "Julian Klein", number: "44" },
-            { id: 6, name: "Johannes Schneevogt", number: "11" },
-            { id: 7, name: "Phil Nückel", number: "9" },
-            { id: 8, name: "Moritz Madel", number: "8" },
-            { id: 9, name: "Frederik Schneider", number: "13" },
-            { id: 10, name: "Max Meinerzhagen", number: "5" },
-            { id: 11, name: "JP Sträßer", number: "33" },
-            { id: 12, name: "Daniel Rischikov", number: "7" },
-            { id: 13, name: "Leon Binder", number: "75" },
-            { id: 14, name: "Severin Schreiber", number: "23" },
-            { id: 15, name: "Leo Dietrich", number: "–" },
-            { id: 16, name: "Anton Mosen", number: "–" },
-            { id: 17, name: "Daniel Canisius", number: "1" },
-            { id: 18, name: "Lukas Kirchner", number: "16" },
-            { id: 19, name: "Chris Koch", number: "26" }
+            { id: 1, name: "Arthur Gartung", number: "93", image: "bilder\Arthur.jpeg" },
+            { id: 2, name: "Jan Herhaus", number: "15", image: "https://via.placeholder.com/150" },
+            { id: 3, name: "Lennart Frielingsdorf", number: "99", image: "https://via.placeholder.com/150" },
+            { id: 4, name: "Dario Barth", number: "2", image: "https://via.placeholder.com/150" },
+            { id: 5, name: "Julian Klein", number: "44", image: "https://via.placeholder.com/150" },
+            { id: 6, name: "Johannes Schneevogt", number: "11", image: "https://via.placeholder.com/150" },
+            { id: 7, name: "Phil Nückel", number: "9", image: "https://via.placeholder.com/150" },
+            { id: 8, name: "Moritz Madel", number: "8", image: "https://via.placeholder.com/150" },
+            { id: 9, name: "Frederik Schneider", number: "13", image: "https://via.placeholder.com/150" },
+            { id: 10, name: "Max Meinerzhagen", number: "5", image: "https://via.placeholder.com/150" },
+            { id: 11, name: "JP Sträßer", number: "33", image: "https://via.placeholder.com/150" },
+            { id: 12, name: "Daniel Rischikov", number: "7", image: "https://via.placeholder.com/150" },
+            { id: 13, name: "Leon Binder", number: "75", image: "https://via.placeholder.com/150" },
+            { id: 14, name: "Severin Schreiber", number: "23", image: "https://via.placeholder.com/150" },
+            { id: 15, name: "Leo Dietrich", number: "–", image: "https://via.placeholder.com/150" },
+            { id: 16, name: "Anton Mosen", number: "–", image: "https://via.placeholder.com/150" },
+            { id: 17, name: "Daniel Canisius", number: "1", image: "https://via.placeholder.com/150" },
+            { id: 18, name: "Lukas Kirchner", number: "16", image: "https://via.placeholder.com/150" },
+            { id: 19, name: "Chris Koch", number: "26", image: "https://via.placeholder.com/150" }
         ];
 
         let totalVotesCast = 0;
@@ -160,12 +160,11 @@
                 card.onclick = () => castVote(p.id, card);
 
                 card.innerHTML = `
-                    <div class="flex items-center gap-2 min-w-0 pointer-events-none">
-                        <div class="w-7 h-7 rounded-lg bg-zinc-900 border border-zinc-700 flex items-center justify-center font-bold text-xs text-amber-400 flex-shrink-0">
-                            ${p.number}
-                        </div>
+                    <div class="flex items-center gap-2.5 min-w-0 pointer-events-none">
+                        <img src="${p.image}" alt="${p.name}" class="w-8 h-8 rounded-full object-cover bg-zinc-900 border border-zinc-700 flex-shrink-0">
                         <div class="min-w-0">
                             <h3 class="font-medium text-xs text-white truncate">${p.name}</h3>
+                            <p class="text-[10px] text-zinc-400">Nr. ${p.number}</p>
                         </div>
                     </div>
                 `;
@@ -178,7 +177,6 @@
             votes[playerId]++;
             totalVotesCast++;
 
-            // Lässt den Hintergrund ganz dezent im hellen Grau des Rahmens aufblitzen
             cardElement.classList.add('flash-active');
             setTimeout(() => {
                 cardElement.classList.remove('flash-active');
@@ -232,6 +230,10 @@
             document.getElementById('result-view').classList.add('hidden');
             document.getElementById('voting-view').classList.remove('hidden');
             document.getElementById('main-title').innerText = "Man of the Match";
+        }
+
+        function resetNames() {
+            // function placeholder for reset logic
         }
 
         function resetVoting() {
