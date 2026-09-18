@@ -159,7 +159,7 @@
                 card.onclick = () => castVote(p.id, card);
 
                 // Bildpfad greift auf den Ordner "bilder" zu (kleingeschrieben)
-                const imageSrc = p.number === "–" ? "https://via.placeholder.com/150" : `bilder/${p.number}.JPG`;
+                const imageSrc = p.number === "–" ? "https://via.placeholder.com/150" : `bilder/${p.number}.jpg`;
 
                 card.innerHTML = `
                     <div class="flex items-center gap-2.5 min-w-0 pointer-events-none">
